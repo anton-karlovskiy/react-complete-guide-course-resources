@@ -1,9 +1,7 @@
-import { useContext } from 'react';
-
-import { ShoppingCartContext } from '../store/shopping-cart-context.jsx';
+import { useShoppingCart } from '../store/shopping-cart-context.jsx';
 
 export default function Product({ id, image, title, price, description }) {
-  const { shoppingCartDispatch } = useContext(ShoppingCartContext);
+  const { shoppingCartDispatch } = useShoppingCart();
 
   return (
     <article className="product">

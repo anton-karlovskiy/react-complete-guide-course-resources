@@ -1,9 +1,7 @@
-import { useContext } from 'react';
-
-import { ShoppingCartContext } from '../store/shopping-cart-context.jsx';
+import { useShoppingCart } from '../store/shopping-cart-context.jsx';
 
 export default function Cart() {
-  const { state: { items }, dispatch } = useContext(ShoppingCartContext);
+  const { state: { items }, dispatch } = useShoppingCart();
 
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,

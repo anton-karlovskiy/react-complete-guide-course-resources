@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, useContext } from 'react';
 
 import { DUMMY_PRODUCTS } from '../dummy-products.js';
 
@@ -67,7 +67,7 @@ function shoppingCartReducer(state, action) {
   }
 }
 
-export default function ShoppingCartProvider({ children }) {
+function ShoppingCartProvider({ children }) {
   const [state, dispatch] = useReducer(shoppingCartReducer, { items: [] }
   );
 
@@ -80,3 +80,13 @@ export default function ShoppingCartProvider({ children }) {
     <ShoppingCartContext.Provider value={value}>{children}</ShoppingCartContext.Provider>
   );
 }
+
+function useShoppingCart() {
+  const context = useContext(ShoppingCartContext);
+  if (!context) {
+    throw new Error('useShoppingCart must be used within a ShoppingCartProvider');
+  }
+  return context;
+}
+
+export { ShoppingCartProvider, useShoppingCart };
