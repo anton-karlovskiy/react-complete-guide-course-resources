@@ -2,7 +2,7 @@ import { createContext, useReducer } from 'react';
 
 import { DUMMY_PRODUCTS } from '../dummy-products.js';
 
-export const CartContext = createContext();
+export const ShoppingCartContext = createContext();
 
 function shoppingCartReducer(state, action) {
   if (action.type === 'ADD_ITEM') {
@@ -64,20 +64,16 @@ function shoppingCartReducer(state, action) {
   return state;
 }
 
-export default function CartContextProvider({ children }) {
-  const [shoppingCartState, shoppingCartDispatch] = useReducer(
-    shoppingCartReducer,
-    {
-      items: [],
-    }
+export default function ShoppingCartProvider({ children }) {
+  const [state, dispatch] = useReducer(shoppingCartReducer, { items: [] }
   );
 
   const value = {
-    shoppingCartState,
-    shoppingCartDispatch,
+    state,
+    dispatch,
   };
 
   return (
-    <CartContext.Provider value={value}>{children}</CartContext.Provider>
+    <ShoppingCartContext.Provider value={value}>{children}</ShoppingCartContext.Provider>
   );
 }

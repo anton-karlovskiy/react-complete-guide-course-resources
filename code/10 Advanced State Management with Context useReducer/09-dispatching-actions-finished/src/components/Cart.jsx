@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 
-import { CartContext } from '../store/shopping-cart-context.jsx';
+import { ShoppingCartContext } from '../store/shopping-cart-context.jsx';
 
 export default function Cart() {
-  const { shoppingCartState: { items }, shoppingCartDispatch } = useContext(CartContext);
+  const { state: { items }, dispatch } = useContext(ShoppingCartContext);
 
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -26,11 +26,11 @@ export default function Cart() {
                   <span> ({formattedPrice})</span>
                 </div>
                 <div className="cart-item-actions">
-                  <button onClick={() => shoppingCartDispatch({ type: 'UPDATE_ITEM', payload: { productId: item.id, amount: -1 } })}>
+                  <button onClick={() => dispatch({ type: 'UPDATE_ITEM', payload: { productId: item.id, amount: -1 } })}>
                     -
                   </button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => shoppingCartDispatch({ type: 'UPDATE_ITEM', payload: { productId: item.id, amount: 1 } })}>
+                  <button onClick={() => dispatch({ type: 'UPDATE_ITEM', payload: { productId: item.id, amount: 1 } })}>
                     +
                   </button>
                 </div>
