@@ -43,27 +43,28 @@ function shoppingCartReducer(state, action) {
 
   if (action.type === 'UPDATE_ITEM') {
     const updatedItems = [...state.items];
-      const updatedItemIndex = updatedItems.findIndex(
-        (item) => item.id === action.payload.productId
-      );
+    const updatedItemIndex = updatedItems.findIndex(
+      (item) => item.id === action.payload.productId
+    );
 
-      const updatedItem = {
-        ...updatedItems[updatedItemIndex],
-      };
+    const updatedItem = {
+      ...updatedItems[updatedItemIndex],
+    };
 
-      updatedItem.quantity += action.payload.amount;
+    updatedItem.quantity += action.payload.amount;
 
-      if (updatedItem.quantity <= 0) {
-        updatedItems.splice(updatedItemIndex, 1);
-      } else {
-        updatedItems[updatedItemIndex] = updatedItem;
-      }
+    if (updatedItem.quantity <= 0) {
+      updatedItems.splice(updatedItemIndex, 1);
+    } else {
+      updatedItems[updatedItemIndex] = updatedItem;
+    }
 
-      return {
-        ...state,
-        items: updatedItems,
-      };
+    return {
+      ...state,
+      items: updatedItems,
+    };
   }
+  
   return state;
 }
 
