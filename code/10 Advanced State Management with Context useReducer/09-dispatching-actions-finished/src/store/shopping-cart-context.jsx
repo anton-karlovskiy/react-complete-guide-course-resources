@@ -2,11 +2,7 @@ import { createContext, useReducer } from 'react';
 
 import { DUMMY_PRODUCTS } from '../dummy-products.js';
 
-export const CartContext = createContext({
-  items: [],
-  addItemToCart: () => {},
-  updateItemQuantity: () => {},
-});
+export const CartContext = createContext();
 
 function shoppingCartReducer(state, action) {
   if (action.type === 'ADD_ITEM') {
@@ -76,30 +72,12 @@ export default function CartContextProvider({ children }) {
     }
   );
 
-  function handleAddItemToCart(id) {
-    shoppingCartDispatch({
-      type: 'ADD_ITEM',
-      payload: id,
-    });
-  }
-
-  function handleUpdateCartItemQuantity(productId, amount) {
-    shoppingCartDispatch({
-      type: 'UPDATE_ITEM',
-      payload: {
-        productId,
-        amount
-      }
-    });
-  }
-
-  const ctxValue = {
-    items: shoppingCartState.items,
-    addItemToCart: handleAddItemToCart,
-    updateItemQuantity: handleUpdateCartItemQuantity,
+  const value = {
+    shoppingCartState,
+    shoppingCartDispatch,
   };
 
   return (
-    <CartContext.Provider value={ctxValue}>{children}</CartContext.Provider>
+    <CartContext.Provider value={value}>{children}</CartContext.Provider>
   );
 }
