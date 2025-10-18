@@ -1,4 +1,4 @@
-import { useShoppingCart } from '../store/shopping-cart-context.jsx';
+import { useShoppingCart } from '../store/shopping-cart-context';
 
 export default function Cart() {
   const { state: { items }, dispatch } = useShoppingCart();

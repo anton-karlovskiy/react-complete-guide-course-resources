@@ -1,10 +1,27 @@
-import { createContext, useReducer, useContext } from 'react';
+import * as React from 'react';
 
 import { DUMMY_PRODUCTS } from '../dummy-products.js';
 
-export const ShoppingCartContext = createContext();
+type State = {
+  items: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+  }[];
+}
 
-function shoppingCartReducer(state, action) {
+type Action =
+  | { type: 'ADD_ITEM'; payload: string; }
+  | { type: 'UPDATE_ITEM'; payload: { productId: string; amount: number; }; };
+
+type Dispatch = (action: Action) => void;
+
+const ShoppingCartContext = React.createContext<
+  { state: State; dispatch: Dispatch; } | undefined
+>(undefined);
+
+function shoppingCartReducer(state: State, action: Action): State {
   switch (action.type) {
     case 'ADD_ITEM': {
       const updatedItems = [...state.items];
@@ -24,6 +41,9 @@ function shoppingCartReducer(state, action) {
         const product = DUMMY_PRODUCTS.find(
           (product) => product.id === action.payload
         );
+        if (!product) {
+          throw new Error(`Product not found: ${action.payload}`);
+        }
         updatedItems.push({
           id: action.payload,
           name: product.title,
@@ -62,13 +82,17 @@ function shoppingCartReducer(state, action) {
       };
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      throw new Error(`Unhandled action type: ${action}`);
     }
   }
 }
 
-function ShoppingCartProvider({ children }) {
-  const [state, dispatch] = useReducer(shoppingCartReducer, { items: [] }
+interface ShoppingCartProviderProps {
+  children: React.ReactNode;
+}
+
+function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
+  const [state, dispatch] = React.useReducer(shoppingCartReducer, { items: [] }
   );
 
   const value = {
@@ -82,10 +106,11 @@ function ShoppingCartProvider({ children }) {
 }
 
 function useShoppingCart() {
-  const context = useContext(ShoppingCartContext);
+  const context = React.useContext(ShoppingCartContext);
   if (!context) {
     throw new Error('useShoppingCart must be used within a ShoppingCartProvider');
   }
+
   return context;
 }
 
