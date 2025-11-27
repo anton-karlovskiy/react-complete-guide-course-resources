@@ -1,7 +1,7 @@
 import { useShoppingCart } from '../store/shopping-cart-context';
 
 export default function Product({ id, image, title, price, description }) {
-  const { shoppingCartDispatch } = useShoppingCart();
+  const { dispatch: shoppingCartDispatch } = useShoppingCart();
 
   return (
     <article className="product">
