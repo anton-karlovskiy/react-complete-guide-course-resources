@@ -1,11 +1,14 @@
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 import { getMeal } from '@/lib/meals';
+import { AWS_S3_BUCKET_HOST_NAME } from '@/config';
+import ImageWithFallback from '@/components/ImageWithFallback';
+import mealFallbackImg from "@/assets/meal-fallback.png";
 import classes from './page.module.css';
 
-export async function generateMetadata({ params }) {
-  const meal = getMeal(params.mealSlug);
+export async function generateMetadata({ params }: { params: Promise<{ mealSlug: string }> }) {
+  const { mealSlug } = await params;
+  const meal = getMeal(mealSlug);
 
   if (!meal) {
     notFound();
@@ -17,8 +20,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function MealDetailsPage({ params }) {
-  const meal = getMeal(params.mealSlug);
+export default async function MealDetailsPage({ params }: { params: Promise<{ mealSlug: string }> }) {
+  const { mealSlug } = await params;
+  const meal = getMeal(mealSlug);
 
   if (!meal) {
     notFound();
@@ -30,8 +34,9 @@ export default function MealDetailsPage({ params }) {
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image
-            src={`https://maxschwarzmueller-nextjs-demo-users-image.s3.amazonaws.com/${meal.image}`}
+          <ImageWithFallback
+            src={`https://${AWS_S3_BUCKET_HOST_NAME}/${meal.image}`}
+            fallbackSrc={mealFallbackImg.src}
             alt={meal.title}
             fill
           />
@@ -50,7 +55,7 @@ export default function MealDetailsPage({ params }) {
           dangerouslySetInnerHTML={{
             __html: meal.instructions,
           }}
-        ></p>
+        />
       </main>
     </>
   );

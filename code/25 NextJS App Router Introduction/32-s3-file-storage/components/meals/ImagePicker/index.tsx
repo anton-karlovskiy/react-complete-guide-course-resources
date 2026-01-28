@@ -5,16 +5,25 @@ import Image from 'next/image';
 
 import classes from './image-picker.module.css';
 
-export default function ImagePicker({ label, name }) {
-  const [pickedImage, setPickedImage] = useState();
-  const imageInput = useRef();
+interface ImagePickerProps {
+  label: string;
+  name: string;
+}
+
+export default function ImagePicker({ label, name }: ImagePickerProps) {
+  const [pickedImage, setPickedImage] = useState<string | null>(null);
+  const imageInput = useRef<HTMLInputElement>(null);
 
   function handlePickClick() {
+    if (!imageInput.current) {
+      throw new Error('Image input not found');
+    }
+
     imageInput.current.click();
   }
 
-  function handleImageChange(event) {
-    const file = event.target.files[0];
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
 
     if (!file) {
       setPickedImage(null);
@@ -24,7 +33,7 @@ export default function ImagePicker({ label, name }) {
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
-      setPickedImage(fileReader.result);
+      setPickedImage(fileReader.result as string);
     };
 
     fileReader.readAsDataURL(file);

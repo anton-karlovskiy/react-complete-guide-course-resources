@@ -1,7 +1,18 @@
-const sql = require('better-sqlite3');
+import sql from 'better-sqlite3';
+
 const db = sql('meals.db');
 
-const dummyMeals = [
+interface DummyMeal {
+  title: string;
+  slug: string;
+  image: string;
+  summary: string;
+  instructions: string;
+  creator: string;
+  creator_email: string;
+}
+
+const dummyMeals: DummyMeal[] = [
   {
     title: 'Juicy Cheese Burger',
     slug: 'juicy-cheese-burger',
@@ -176,6 +187,10 @@ db.prepare(`
        creator_email TEXT NOT NULL
     )
 `).run();
+
+// Make this script repeatable (e.g. on CI/Vercel builds).
+// Without clearing, re-running would fail due to the UNIQUE slug constraint.
+db.prepare(`DELETE FROM meals`).run();
 
 async function initData() {
   const stmt = db.prepare(`

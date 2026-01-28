@@ -16,7 +16,6 @@ export default function CommunityPage() {
       </header>
       <main className={classes.main}>
         <h2>Community Perks</h2>
-
         <ul className={classes.perks}>
           <li>
             <Image src={mealIcon} alt="A delicious meal" />

@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 
-import classes from './page.module.css';
-import MealsGrid from '@/components/meals/meals-grid';
+import MealGridList from '@/components/meals/MealGridList';
 import { getMeals } from '@/lib/meals';
+import classes from './page.module.css';
 
 export const metadata = {
   title: 'All Meals',
@@ -11,10 +11,9 @@ export const metadata = {
 };
 
 async function Meals() {
-  console.log('Fetching meals');
   const meals = await getMeals();
 
-  return <MealsGrid meals={meals} />;
+  return <MealGridList meals={meals} />;
 }
 
 export default function MealsPage() {
