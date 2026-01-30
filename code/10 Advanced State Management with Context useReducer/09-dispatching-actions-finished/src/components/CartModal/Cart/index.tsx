@@ -1,4 +1,4 @@
-import { useShoppingCart } from '../store/shopping-cart-context';
+import { useShoppingCart } from '../../../store/shopping-cart-context';
 
 export default function Cart() {
   const { state: { items }, dispatch } = useShoppingCart();
@@ -7,6 +7,7 @@ export default function Cart() {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+
   const formattedTotalPrice = `$${totalPrice.toFixed(2)}`;
 
   return (
@@ -24,11 +25,25 @@ export default function Cart() {
                   <span> ({formattedPrice})</span>
                 </div>
                 <div className="cart-item-actions">
-                  <button onClick={() => dispatch({ type: 'UPDATE_ITEM', payload: { productId: item.id, amount: -1 } })}>
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: 'UPDATE_ITEM',
+                        payload: { productId: item.id, amount: -1 },
+                      })
+                    }
+                  >
                     -
                   </button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => dispatch({ type: 'UPDATE_ITEM', payload: { productId: item.id, amount: 1 } })}>
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: 'UPDATE_ITEM',
+                        payload: { productId: item.id, amount: 1 },
+                      })
+                    }
+                  >
                     +
                   </button>
                 </div>

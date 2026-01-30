@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { DUMMY_PRODUCTS } from '../dummy-products.js';
+import { DUMMY_PRODUCTS } from '../dummy-products';
 
 type State = {
   items: {

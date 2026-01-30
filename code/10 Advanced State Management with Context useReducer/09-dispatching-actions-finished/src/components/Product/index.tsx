@@ -1,6 +1,7 @@
-import { useShoppingCart } from '../store/shopping-cart-context';
+import { useShoppingCart } from '../../store/shopping-cart-context';
+import type { Product as ProductType } from '../../types/product';
 
-export default function Product({ id, image, title, price, description }) {
+export default function Product({ id, image, title, price, description }: ProductType) {
   const { dispatch: shoppingCartDispatch } = useShoppingCart();
 
   return (
@@ -13,7 +14,9 @@ export default function Product({ id, image, title, price, description }) {
           <p>{description}</p>
         </div>
         <p className="product-actions">
-          <button onClick={() => shoppingCartDispatch({ type: 'ADD_ITEM', payload: id })}>Add to Cart</button>
+          <button onClick={() => shoppingCartDispatch({ type: 'ADD_ITEM', payload: id })}>
+            Add to Cart
+          </button>
         </p>
       </div>
     </article>

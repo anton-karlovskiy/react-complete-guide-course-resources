@@ -1,15 +1,20 @@
 import { useRef } from 'react';
 
-import CartModal from './CartModal.jsx';
-import { useShoppingCart } from '../store/shopping-cart-context';
+import CartModal, { type CartModalRef } from '../CartModal';
+import { useShoppingCart } from '../../store/shopping-cart-context';
 
 export default function Header() {
-  const modal = useRef();
+  const modal = useRef<CartModalRef>(null);
+
   const { state: { items } } = useShoppingCart();
 
   const cartQuantity = items.length;
 
   function handleOpenCartClick() {
+    if (!modal.current) {
+      throw new Error('Modal reference is not set');
+    }
+
     modal.current.open();
   }
 
